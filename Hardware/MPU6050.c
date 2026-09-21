@@ -1,9 +1,15 @@
 #include "stm32f10x.h"                  // Device header
-#include"I2C.h"
+#include"HardwareI2C.h"
 #include"MPU6050_Register.h"
+
+void MPU6050_Hardware_Init(void)
+{
+    Hardware_I2C_Init();
+}
 
 void MPU6050_WriteRegister(uint8_t Address,uint8_t Data)
 {
+    /*                   软件控制I2C
     BaseConfig_Start();
     BaseConfig_SendByte(0XD0);
     BaseConfig_ReceiveACK();
@@ -11,11 +17,14 @@ void MPU6050_WriteRegister(uint8_t Address,uint8_t Data)
     BaseConfig_ReceiveACK();
     BaseConfig_SendByte(Data);
     BaseConfig_ReceiveACK();
-    BaseConfig_Stop;
+    BaseConfig_Stop();
+    */
+   HardwareI2C_WriteRegister(Address,Data);
 }
 
 uint8_t MPU6050_ReadRegister(uint8_t Address)
 {
+    /*                                           软件控制I2C
     uint8_t Rec_Data;
     BaseConfig_Start();
     BaseConfig_SendByte(0XD0);
@@ -31,10 +40,14 @@ uint8_t MPU6050_ReadRegister(uint8_t Address)
     BaseConfig_Stop();
 
     return Rec_Data;
+    */
+   HardwareI2C_ReceiveRegister(Address);
 }
 
+/*                软件控制时的I2C初始化
 void MPU6050_Init(void)
 {
+                                                  //软件控制I2C
     MI2C_Init();
     MPU6050_WriteRegister(MPU6050_PWR_MGMT_1,0X01);
     MPU6050_WriteRegister(MPU6050_PWR_MGMT_2,0x00);
@@ -43,7 +56,9 @@ void MPU6050_Init(void)
     MPU6050_WriteRegister(MPU6050_GYRO_CONFIG,0x18);
     MPU6050_WriteRegister(MPU6050_ACCEL_CONFIG,0x18);
     
+    
 }
+*/
 
 void MPU6050_GetData(int16_t *AX,int16_t *AY,int16_t *AZ,int16_t *GX,int16_t *GY,int16_t *GZ)
 {
