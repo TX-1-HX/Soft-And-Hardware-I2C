@@ -48,7 +48,7 @@ void BaseConfig_Stop(void)
     MI2C_W_SDA(0);
     MI2C_W_SCL(0);
     MI2C_W_SCL(1);
-    MI2C_W_SCL(1);
+    MI2C_W_SDA(1);
 }
 
 void BaseConfig_SendByte(uint8_t Byte)
@@ -88,6 +88,8 @@ uint8_t BaseConfig_ReceiveACK(void)
 {
     uint8_t ACK;
     MI2C_W_SDA(1);
+    ACK = MI2C_R_SDA();
     MI2C_W_SCL(1);
     MI2C_W_SCL(0);
+    return ACK;
 }
