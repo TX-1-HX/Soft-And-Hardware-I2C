@@ -49,13 +49,16 @@ uint8_t HardwareI2C_ReceiveRegister(uint8_t regiseter)
     I2C_GenerateSTART(I2C2,ENABLE);
     while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_MODE_SELECT) != SUCCESS);
     I2C_Send7bitAddress(I2C2,0XD0,I2C_Direction_Receiver);
-    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED) != SUCCESS);
+    while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED) != SUCCESS);
 
     I2C_AcknowledgeConfig(I2C2,DISABLE);
     I2C_GenerateSTOP(I2C2,ENABLE);
 
     while(I2C_CheckEvent(I2C2,I2C_EVENT_MASTER_BYTE_RECEIVED) != SUCCESS);
     Receive_Data = I2C_ReceiveData(I2C2);
-    
+
+    I2C_AcknowledgeConfig(I2C2,ENABLE);
+
     return Receive_Data;
 }
+
