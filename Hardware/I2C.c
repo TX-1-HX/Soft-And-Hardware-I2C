@@ -31,8 +31,8 @@ uint8_t MI2C_R_SDA(void)
 {
     uint8_t value;
     value = GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_11);
+	Delay_us(10);
     return value;
-    Delay_us(10);
 }
 
 void BaseConfig_Start(void)
@@ -93,3 +93,4 @@ uint8_t BaseConfig_ReceiveACK(void)
     MI2C_W_SCL(0);
     return ACK;
 }
+
